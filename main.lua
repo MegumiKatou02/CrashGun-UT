@@ -4,7 +4,7 @@ local Game = require "Game"
 local Button = require "Components.Button"
 
 function LoadMenu()
-    game.button_state.menu.play_game = Button(100, 100, "Chơi", nil, nil)
+    game.button_state.menu.play_game = Button(230, 100, "Game mới", nil, nil)
 end
 
 function love.load()
@@ -22,6 +22,6 @@ end
 function love.draw()
     if game.state["menu"] then
         game:DrawMenuGame()
-        game.button_state.menu.play_game:draw(10, 10, 10, 10)
+        game.button_state.menu.play_game:draw(20, 35, 10, 10)
     end
 end

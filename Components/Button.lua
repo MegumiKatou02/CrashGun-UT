@@ -1,6 +1,9 @@
+---@diagnostic disable: undefined-global, lowercase-global
 local love = require "love"
 
 function Button(width, height, text, func, func_parameter)
+    local dpi = love.graphics.getDPIScale()
+    mainFont = love.graphics.newFont("font/NotoSansTC-Medium.ttf", 30 * dpi)
     return {
         width = width or 100,
         height = height or 100,
@@ -12,6 +15,7 @@ function Button(width, height, text, func, func_parameter)
         text_x = 10,
         text_y = 10,
         text = text or "No Text",
+
 
         checkPressed = function (self, mouse_x, mouse_y)
             
@@ -32,14 +36,23 @@ function Button(width, height, text, func, func_parameter)
             else
                 self.text_y = self.button_y
             end
+            
+            love.graphics.rectangle("fill", self.button_x, self.button_y, self.width, self.height)
+            
+            love.graphics.setFont(mainFont)
+            
+            local textWidth = mainFont:getWidth(text)
+            local textHeight = mainFont:getHeight()
+            
+            -- Tính toán vị trí để đặt văn bản vào chính giữa hình chữ nhật
+            local textX = self.button_x + (self.width - textWidth) / 2
+            local textY = self.button_y + (self.height - textHeight) / 2
 
             love.graphics.setColor(0.6, 0.6, 0.6)
 
-            love.graphics.rectangle("fill", self.button_x, self.button_y, self.width, self.height)
-
             love.graphics.setColor(0, 0, 0)
 
-            love.graphics.print(self.text, self.text_x, self.text_y)
+            love.graphics.print(self.text, textX, textY)
 
             love.graphics.setColor(1, 1, 1)
         end

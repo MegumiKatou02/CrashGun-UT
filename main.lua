@@ -109,8 +109,8 @@ function love.draw()
     elseif game.state["running"] then
         love.graphics.setColor(0, 1, 0)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-
-        
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.circle("fill", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100)  
     else
         -- for index in pairs(game.state) do
         --     if game.state[index] then

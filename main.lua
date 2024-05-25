@@ -2,6 +2,7 @@
 local love = require "love"
 local Game = require "Game"
 local Button = require "Components.Button"
+local Player = require "Player"
 
 -- local mys = love.mouse.getX() .. " " .. love.mouse.getY()
 
@@ -61,7 +62,8 @@ function love.mousepressed(x, y, button, istouch, presses)
 end
 
 function love.load()
-    game = Game();
+    game = Game()
+    player = Player()
     game.state["menu"] = true
     LoadMenu()
 end
@@ -76,8 +78,8 @@ function love.update(dt)
             end
         end
     end
-    if game.state["menu"] then
-    
+    if game.state["running"] then
+        player:move(dt)
     end
 end
 
@@ -107,10 +109,12 @@ function love.draw()
         end
         --
     elseif game.state["running"] then
-        love.graphics.setColor(0, 1, 0)
+        love.graphics.setColor(40/225, 222/225, 49/225)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
         love.graphics.setColor(1, 1, 1)
-        love.graphics.circle("fill", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100)  
+        love.graphics.circle("fill", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100)
+
+        player:draw()
     else
         -- for index in pairs(game.state) do
         --     if game.state[index] then

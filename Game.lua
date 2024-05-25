@@ -2,7 +2,8 @@
 local love = require "love"
 
 function Game()
-    backgroundMenu = love.graphics.newImage("image/background/final.png")
+    backgroundMenu = love.graphics.newImage("image/background/finalT.png")
+    frameSelectionMenu = love.graphics.newImage("image/Menu/Components/blackScreen.png")
     return {
         state = { -- các trạng thái trong một game
             menu = false,
@@ -19,7 +20,8 @@ function Game()
         end,
 
         DrawMenuGame = function ()
-            love.graphics.draw(backgroundMenu, 0, 0, 0, 2, 2)
+            love.graphics.draw(backgroundMenu, 0, 0)
+            love.graphics.draw(frameSelectionMenu, 10, love.graphics.getHeight()/2 - frameSelectionMenu:getHeight()/2)
         end
     }
 

@@ -11,5 +11,7 @@ function love.update(dt)
 end
 
 function love.draw()
-    game:DrawMenuGame()
+    if game.state["menu"] then
+        game:DrawMenuGame()
+    end
 end

@@ -7,6 +7,10 @@ local bullets = require "Bullets"
 
 -- local mys = love.mouse.getX() .. " " .. love.mouse.getY()
 
+function ChangeChoose(state)
+    game.state.choose["settings"] = state == "settings"
+end
+
 function ChangeGameState(state)
     game.state["menu"] = state == "menu"
     game.state["menuDouble"] = state == "menuDouble"
@@ -64,7 +68,7 @@ end
 
 function LoadMenu()
     game.button_state.menu.play_game = Button(230, 100, "Game mới", ChangeGameState, "menuDouble")
-    game.button_state.menu.setting_game = Button(230, 100, "Cài đặt", nil, nil)
+    game.button_state.menu.setting_game = Button(230, 100, "Cài đặt", ChangeChoose, "settings")
     game.button_state.menu.information_game = Button(230, 100, "Cửa hàng", nil, nil)
     game.button_state.menu.exit_game = Button(230, 100, "Thoát game", love.event.quit, nil)
 
@@ -77,7 +81,8 @@ function love.mousepressed(x, y, button, istouch, presses)
         if game.state["menu"] then
             for index in pairs(game.button_state.menu) do
                 if game.button_state.menu[index] ~= game.button_state.menu.select_mode_easy  and
-                   game.button_state.menu[index] ~= game.button_state.menu.select_mode_hard then  
+                   game.button_state.menu[index] ~= game.button_state.menu.select_mode_hard then
+                    ChangeChoose()
                     game.button_state.menu[index]:checkPressed(x, y)
                 end
             end
@@ -97,7 +102,13 @@ function love.mousepressed(x, y, button, istouch, presses)
     end
 end
 
+function SettingMenu()
+    love.graphics.rectangle("fill", 300, 26, 660, 550)
+end
+
+--#region main
 function love.load()
+    avatarPlayer = love.graphics.newImage("image/icon/tt.jpg")
     game = Game()
     player = Player()
     Bullet = bullets()
@@ -145,7 +156,9 @@ function love.draw()
             game.button_state.menu.select_mode_hard:draw(recX * 2 + 30, recY + 17, 40, 25)
             love.graphics.setColor(1, 1, 1)
         end
-        --
+        if game.state.choose["settings"] then
+            SettingMenu()
+        end
     elseif game.state["running"] then
         love.graphics.setColor(40/225, 222/225, 49/225)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
@@ -165,6 +178,15 @@ function love.draw()
             love.graphics.line(bull.x, bull.y, endX, endY)
             love.graphics.setColor(1, 1, 1)
         end
+        --#region frame
+        love.graphics.draw(avatarPlayer, 0, 0, 0, 0.15, 0.15)
+        love.graphics.rectangle("fill", 85, 0, 400, 40)
+        for i = 85, player.blood, 10 do
+            love.graphics.setColor(1, 0, 0)
+            love.graphics.rectangle("fill", i, 0, 10, 40)
+        end
+        love.graphics.setColor(1, 1, 1)
+        --#endregion
     else
         -- for index in pairs(game.state) do
         --     if game.state[index] then
@@ -174,4 +196,5 @@ function love.draw()
         -- love.graphics.print(">", 300, 500)
     end
     love.graphics.print(mys, 80, 500)
+--#endregion
 end

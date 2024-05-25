@@ -23,6 +23,7 @@ function Button(width, height, text, func, func_parameter)
                 (mouse_x <= self.button_x + self.width) then         
                 if (mouse_y >= self.button_y) and
                     (mouse_y <= self.button_y + self.height) then
+                    
                     if func_parameter ~= nil then
                         self.func(func_parameter)
                     else

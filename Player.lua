@@ -12,6 +12,7 @@ function Player()
         canShoot = true, -- Biến trạng thái cho phép bắn
         shootTimer = 0, -- Thời gian đếm để xác định thời điểm tiếp theo có thể bắn
         speed = 149,
+        blood = 400 + 85,
 
         move = function (self, dt)
             if love.keyboard.isDown("w") then

@@ -12,9 +12,10 @@ function Game()
             pause = false,
             running = false,
             exit = false,
-            choose = {
-                settings = false
-            }
+        },
+        
+        main = {
+            settings = false
         },
 
         button_state = {

@@ -8,7 +8,7 @@ local bullets = require "Bullets"
 -- local mys = love.mouse.getX() .. " " .. love.mouse.getY()
 
 function ChangeChoose(state)
-    game.state.choose["settings"] = state == "settings"
+    game.main["settings"] = state == "settings"
 end
 
 function ChangeGameState(state)
@@ -68,10 +68,10 @@ end
 
 function LoadMenu()
     game.button_state.menu.play_game = Button(230, 100, "Game mới", ChangeGameState, "menuDouble")
-    game.button_state.menu.setting_game = Button(230, 100, "Cài đặt", ChangeChoose, "settings")
     game.button_state.menu.information_game = Button(230, 100, "Cửa hàng", nil, nil)
     game.button_state.menu.exit_game = Button(230, 100, "Thoát game", love.event.quit, nil)
-
+    game.button_state.menu.setting_game = Button(230, 100, "Cài đặt", ChangeChoose, "settings")
+    
     game.button_state.menu.select_mode_easy = Button(230, 320, "Chế độ \n\tDỄ", ChangeGameState, "running")
     game.button_state.menu.select_mode_hard = Button(230, 320, "Chế độ \n\tKHÓ", nil, nil)
 end
@@ -82,7 +82,7 @@ function love.mousepressed(x, y, button, istouch, presses)
             for index in pairs(game.button_state.menu) do
                 if game.button_state.menu[index] ~= game.button_state.menu.select_mode_easy  and
                    game.button_state.menu[index] ~= game.button_state.menu.select_mode_hard then
-                    ChangeChoose()
+                    -- ChangeChoose("")
                     game.button_state.menu[index]:checkPressed(x, y)
                 end
             end
@@ -156,7 +156,7 @@ function love.draw()
             game.button_state.menu.select_mode_hard:draw(recX * 2 + 30, recY + 17, 40, 25)
             love.graphics.setColor(1, 1, 1)
         end
-        if game.state.choose["settings"] then
+        if game.main["settings"] then
             SettingMenu()
         end
     elseif game.state["running"] then

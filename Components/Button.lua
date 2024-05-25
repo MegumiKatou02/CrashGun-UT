@@ -18,7 +18,18 @@ function Button(width, height, text, func, func_parameter)
 
 
         checkPressed = function (self, mouse_x, mouse_y)
-            
+            if (mouse_x >= self.button_x) and
+                (mouse_x <= self.button_x + self.width) then         
+                if (mouse_y >= self.button_y) and
+                    (mouse_y <= self.button_y + self.height) then
+                    if func_parameter ~= nil then
+                        self.func(func_parameter)
+                    else
+                        self.func()
+                    end
+                end
+
+            end
         end,
 
         draw = function (self, button_x, button_y, text_x, text_y)

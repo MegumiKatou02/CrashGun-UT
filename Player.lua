@@ -7,8 +7,8 @@ function Player()
         skin = love.graphics.newImage("image/playerSkin/players.png"),
         angle = math.rad(-90), -- Góc quay ban đầu là -π/2 radian (90 độ ngược chiều kim đồng hồ từ hướng phải)
         rotationSpeed = math.rad(200), -- Tốc độ quay, đơn vị radian/giây
-        bulletSpeed = 1000, -- Tốc độ của đạn
-        shootDelay = 0.2, -- Thời gian chờ giữa mỗi lần bắn (giây)
+        bulletSpeed = 1900, -- Tốc độ của đạn
+        shootDelay = 0.1, -- Thời gian chờ giữa mỗi lần bắn (giây)
         canShoot = true, -- Biến trạng thái cho phép bắn
         shootTimer = 0, -- Thời gian đếm để xác định thời điểm tiếp theo có thể bắn
         speed = 149,
@@ -16,7 +16,7 @@ function Player()
         move = function (self, dt)
             if love.keyboard.isDown("w") then
                 self.x = self.x + math.cos(self.angle) * self.speed * dt
-                self = self.y + math.sin(self.angle) * self.speed * dt
+                self.y = self.y + math.sin(self.angle) * self.speed * dt
             end
             if love.keyboard.isDown("s") then
                 self.x = self.x - math.cos(self.angle) * self.speed * dt

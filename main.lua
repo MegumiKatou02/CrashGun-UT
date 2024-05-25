@@ -3,6 +3,7 @@ local love = require "love"
 local Game = require "Game"
 local Button = require "Components.Button"
 local Player = require "Player"
+local bullets = require "Bullets"
 
 -- local mys = love.mouse.getX() .. " " .. love.mouse.getY()
 
@@ -18,6 +19,42 @@ function CheckOutSideTheRectangle(x, y, width, height, mouse_x, mouse_y)
     if mouse_x < x or mouse_x > x + width or mouse_y < y or mouse_y > y + height then
         return true
     else return false
+    end
+end
+
+function createBullet(x, y, angle)
+    local bullet = {
+        x = x,
+        y = y,
+        angle = angle,
+        speed = player.bulletSpeed
+    }
+    table.insert(Bullet.bullets, bullet)
+end
+
+function GunShooting(dt)
+    if not player.canShoot then
+        player.shootTimer = player.shootTimer - dt
+        if player.shootTimer <= 0 then
+            player.canShoot = true
+        end
+    end
+
+    if love.keyboard.isDown("j") and player.canShoot then
+        createBullet(player.x, player.y, player.angle)
+        player.canShoot = false
+        player.shootTimer = player.shootDelay
+    end
+
+    for i = #Bullet.bullets, 1, -1 do
+        local bull = Bullet.bullets[i]
+        bull.x = bull.x + bull.speed * math.cos(bull.angle) * dt
+        bull.y = bull.y + bull.speed * math.sin(bull.angle) * dt
+
+        -- Xóa đạn nếu nó ra khỏi màn hình
+        if bull.x < 0 or bull.x > love.graphics.getWidth() or bull.y < 0 or bull.y > love.graphics.getHeight() then
+            table.remove(Bullet.bullets, i)
+        end
     end
 end
 
@@ -56,7 +93,6 @@ function love.mousepressed(x, y, button, istouch, presses)
                     game.button_state.menu[index]:checkPressed(x, y)
                 end
             end
-
         end
     end
 end
@@ -64,6 +100,7 @@ end
 function love.load()
     game = Game()
     player = Player()
+    Bullet = bullets()
     game.state["menu"] = true
     LoadMenu()
 end
@@ -80,6 +117,7 @@ function love.update(dt)
     end
     if game.state["running"] then
         player:move(dt)
+        GunShooting(dt)
     end
 end
 
@@ -115,6 +153,18 @@ function love.draw()
         love.graphics.circle("fill", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100)
 
         player:draw()
+
+        for _, bull in ipairs(Bullet.bullets) do
+            -- Tính toán tọa độ của điểm kết thúc của đoạn thẳng
+            local endX = bull.x + math.cos(bull.angle) * 20 -- 20 là độ dài của đoạn thẳng
+            local endY = bull.y + math.sin(bull.angle) * 20
+    
+            -- Vẽ đoạn thẳng
+            love.graphics.setLineWidth(5)
+            love.graphics.setColor(0, 0, 0)
+            love.graphics.line(bull.x, bull.y, endX, endY)
+            love.graphics.setColor(1, 1, 1)
+        end
     else
         -- for index in pairs(game.state) do
         --     if game.state[index] then

@@ -1,5 +1,6 @@
----@diagnostic disable: lowercase-global
+---@diagnostic disable: lowercase-global, undefined-global
 local love = require "love"
+local Button = require "Components.Button"
 
 function Game()
     backgroundMenu = love.graphics.newImage("image/background/finalT.png")
@@ -10,6 +11,10 @@ function Game()
             pause = false,
             running = false,
             exit = false,
+        },
+
+        button_state = {
+            menu = {}
         },
 
         ChangeGameState = function (self, state)

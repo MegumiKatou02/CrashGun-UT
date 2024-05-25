@@ -8,6 +8,7 @@ function Game()
     return {
         state = { -- các trạng thái trong một game
             menu = false,
+            menuDouble = false,
             pause = false,
             running = false,
             exit = false,

@@ -3,7 +3,8 @@ local love = require "love"
 
 function Button(width, height, text, func, func_parameter)
     local dpi = love.graphics.getDPIScale()
-    mainFont = love.graphics.newFont("font/NotoSansTC-Medium.ttf", 30 * dpi)
+    local standardSize = 30
+    mainFont = love.graphics.newFont("font/NotoSansTC-Medium.ttf", standardSize * dpi)
     return {
         width = width or 100,
         height = height or 100,
@@ -32,9 +33,10 @@ function Button(width, height, text, func, func_parameter)
             end
         end,
 
-        draw = function (self, button_x, button_y, text_x, text_y)
+        draw = function (self, button_x, button_y, text_x, text_y, size, high)
             self.button_x = button_x or self.button_x
             self.button_y = button_y or self.button_y
+            size = size or standardSize
 
             if text_x then
                 self.text_x = text_x + button_x
@@ -48,8 +50,10 @@ function Button(width, height, text, func, func_parameter)
                 self.text_y = self.button_y
             end
             
+            high = high or 0
+
             love.graphics.rectangle("fill", self.button_x, self.button_y, self.width, self.height)
-            
+            mainFont = love.graphics.newFont("font/NotoSansTC-Medium.ttf", size * dpi)
             love.graphics.setFont(mainFont)
             
             local textWidth = mainFont:getWidth(text)
@@ -57,7 +61,7 @@ function Button(width, height, text, func, func_parameter)
             
             -- Tính toán vị trí để đặt văn bản vào chính giữa hình chữ nhật
             local textX = self.button_x + (self.width - textWidth) / 2
-            local textY = self.button_y + (self.height - textHeight) / 2
+            local textY = self.button_y + (self.height - textHeight) / 2 - high;
 
             love.graphics.setColor(0.6, 0.6, 0.6)
 

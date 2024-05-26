@@ -62,8 +62,11 @@ function GunShooting(dt)
     end
 end
 
-function StartGame()
-    ChangeGameState("running")
+function SettingMenu()
+    love.graphics.rectangle("fill", 300, 26, 660, 550)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle("fill", 400, 50, 100, 100)
+    love.graphics.setColor(1, 1, 1)
 end
 
 function LoadMenu()
@@ -82,8 +85,11 @@ function love.mousepressed(x, y, button, istouch, presses)
             for index in pairs(game.button_state.menu) do
                 if game.button_state.menu[index] ~= game.button_state.menu.select_mode_easy  and
                    game.button_state.menu[index] ~= game.button_state.menu.select_mode_hard then
-                    -- ChangeChoose("")
+                    ChangeChoose("")
                     game.button_state.menu[index]:checkPressed(x, y)
+                    if game.main["settings"] then -- trường hợp gặp settings thì break
+                        break
+                    end
                 end
             end
         elseif game.state["menuDouble"] then
@@ -100,10 +106,6 @@ function love.mousepressed(x, y, button, istouch, presses)
             end
         end
     end
-end
-
-function SettingMenu()
-    love.graphics.rectangle("fill", 300, 26, 660, 550)
 end
 
 --#region main file

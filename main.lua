@@ -106,7 +106,7 @@ function SettingMenu()
     love.graphics.rectangle("fill", 300, 26, 660, 550)
 end
 
---#region main
+--#region main file
 function love.load()
     avatarPlayer = love.graphics.newImage("image/icon/tt.jpg")
     game = Game()

@@ -4,8 +4,11 @@ local Game = require "Game"
 local Button = require "Components.Button"
 local Player = require "Player"
 local bullets = require "Bullets"
+local Monster = require "Monster"
 
--- local mys = love.mouse.getX() .. " " .. love.mouse.getY()
+enemies = {}
+local spawnTimer = 0
+local spawnInterval = 5
 
 function ChangeChoose(state)
     game.main["settings"] = state == "settings"
@@ -81,6 +84,7 @@ end
 
 function love.mousepressed(x, y, button, istouch, presses)
     if button == 1 then
+        --#region choose main screen
         if game.state["menu"] then
             for index in pairs(game.button_state.menu) do
                 if game.button_state.menu[index] ~= game.button_state.menu.select_mode_easy  and
@@ -105,6 +109,7 @@ function love.mousepressed(x, y, button, istouch, presses)
                 end
             end
         end
+        --#endregion
     end
 end
 
@@ -112,6 +117,8 @@ end
 function love.load()
     avatarPlayer = love.graphics.newImage("image/icon/tt.jpg")
     game = Game()
+    -- monster = Monster(50)
+    table.insert(enemies, Monster(-1, -1, 50))
     player = Player()
     Bullet = bullets()
     game.state["menu"] = true
@@ -131,6 +138,15 @@ function love.update(dt)
     if game.state["running"] then
         player:move(dt)
         GunShooting(dt)
+        -- monster:move(player.x, player.y, dt)
+        spawnTimer = spawnTimer + dt
+        if spawnTimer >= spawnInterval then
+            spawnEnemy()
+            spawnTimer = 0
+        end
+        for _, enemy in ipairs(enemies) do
+            enemy:move(player.x, player.y, dt)
+        end
     end
 end
 
@@ -168,6 +184,10 @@ function love.draw()
         love.graphics.circle("fill", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100)
 
         player:draw()
+        
+        for _, enemy in ipairs(enemies) do
+            enemy:draw()
+        end
 
         for _, bull in ipairs(Bullet.bullets) do
             -- Tính toán tọa độ của điểm kết thúc của đoạn thẳng
@@ -199,4 +219,23 @@ function love.draw()
     end
     love.graphics.print(mys, 80, 500)
 --#endregion
+end
+
+function spawnEnemy()
+    local side = math.random(1, 4)
+    local x, y
+    if side == 1 then -- Trên màn hình
+        x = math.random(0, love.graphics.getWidth())
+        y = -30
+    elseif side == 2 then -- Dưới màn hình
+        x = math.random(0, love.graphics.getWidth())
+        y = love.graphics.getHeight() + 30
+    elseif side == 3 then -- Bên trái màn hình
+        x = -30
+        y = math.random(0, love.graphics.getHeight())
+    else -- Bên phải màn hình
+        x = love.graphics.getWidth() + 30
+        y = math.random(0, love.graphics.getHeight())
+    end
+    table.insert(enemies, Monster(x, y, 50))
 end

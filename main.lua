@@ -108,6 +108,12 @@ function love.mousepressed(x, y, button, istouch, presses)
                     game.button_state.menu[index]:checkPressed(x, y)
                 end
             end
+        elseif game.state["running"] then
+            -- if button == 1 and player.canShoot then
+            --     createBullet(player.x, player.y, player.angle)
+            --     player.canShoot = false
+            --     player.shootTimer = player.shootDelay
+            -- end
         end
         --#endregion
     end
@@ -142,6 +148,7 @@ function love.update(dt)
         checkPlayerCollision()
         -- monster:move(player.x, player.y, dt)
         spawnTimer = spawnTimer + dt
+        spawnInterval = 5 - game.level; -- *n
         if spawnTimer >= spawnInterval then
             spawnEnemy()
             spawnTimer = 0
@@ -210,6 +217,7 @@ function love.draw()
             love.graphics.rectangle("fill", i, 0, 10, 40)
         end
         love.graphics.setColor(1, 1, 1)
+        love.graphics.print("Level " .. game.level, 0, 75)
         --#endregion
     else
         -- for index in pairs(game.state) do
@@ -249,7 +257,16 @@ function checkCollisions()
             local enemy = enemies[j]
             if checkCollision(bullet.x, bullet.y, enemy.x, enemy.y, enemy.image:getWidth()/2) then
                 table.remove(Bullet.bullets, i)
-                table.remove(enemies, j)
+                if enemy.blood <= 1 then
+                    table.remove(enemies, j)
+                    game.countEnemyDie = game.countEnemyDie + 1;
+                    if game.countEnemyDie >= 5 then
+                        game.countEnemyDie = 0;
+                        game.level = game.level + 1;
+                    end
+                else 
+                    enemy.blood = enemy.blood -1; -- *n
+                end
                 break
             end
         end
@@ -267,7 +284,10 @@ end
 function checkPlayerCollision()
     for _, enemy in ipairs(enemies) do
         if checkCollision(player.x, player.y, enemy.x, enemy.y, player.radius + enemy.image:getWidth()/2) then
-            love.event.quit() -- Thoát chương trình
+            if player.blood <= 2 then
+                love.event.quit();
+            end
+            player.blood = player.blood - 1;
         end
     end
 end

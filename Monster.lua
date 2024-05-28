@@ -22,6 +22,7 @@ function Monster(_x, _y, speed)
         image = love.graphics.newImage("image/monster/monster.png"),
         x = _x or 100,
         y = _y or 100,
+        blood = 3,
         speed = speed or 60,
         angle = math.rad(-90),
 

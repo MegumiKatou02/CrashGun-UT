@@ -6,6 +6,8 @@ function Game()
     backgroundMenu = love.graphics.newImage("image/background/finalT.png")
     frameSelectionMenu = love.graphics.newImage("image/Menu/Components/blackScreen.png")
     return {
+        level = 1,
+        countEnemyDie = 0,
         state = { -- các trạng thái trong một game
             menu = false,
             menuDouble = false,

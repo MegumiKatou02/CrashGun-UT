@@ -138,6 +138,7 @@ function love.update(dt)
     if game.state["running"] then
         player:move(dt)
         GunShooting(dt)
+        checkCollisions()
         -- monster:move(player.x, player.y, dt)
         spawnTimer = spawnTimer + dt
         if spawnTimer >= spawnInterval then
@@ -238,4 +239,26 @@ function spawnEnemy()
         y = math.random(0, love.graphics.getHeight())
     end
     table.insert(enemies, Monster(x, y, 50))
+end
+
+function checkCollisions()
+    for i = #Bullet.bullets, 1, -1 do
+        local bullet = Bullet.bullets[i]
+        for j = #enemies, 1, -1 do
+            local enemy = enemies[j]
+            if checkCollision(bullet.x, bullet.y, enemy.x, enemy.y, enemy.image:getWidth()/2) then
+                table.remove(Bullet.bullets, i)
+                table.remove(enemies, j)
+                break
+            end
+        end
+    end
+end
+
+-- Hàm kiểm tra va chạm giữa đạn và quái vật (tròn)??
+function checkCollision(bx, by, ex, ey, eradius)
+    local dx = bx - ex
+    local dy = by - ey
+    local distance = math.sqrt(dx * dx + dy * dy)
+    return distance < eradius
 end

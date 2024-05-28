@@ -19,7 +19,7 @@ end
 
 function Monster(_x, _y, speed)
     return {
-        image = love.graphics.newImage("image/monster/monster.png"),
+        image_spider = love.graphics.newImage("image/monster/monster.png"),
         x = _x or 100,
         y = _y or 100,
         blood = 3,
@@ -40,7 +40,11 @@ function Monster(_x, _y, speed)
         end,
 
         draw = function (self)
-            love.graphics.draw(self.image, self.x, self.y, self.angle, 1, 1, self.image:getWidth() / 2, self.image:getHeight() / 2)
+            love.graphics.draw(self.image_spider, self.x, self.y, self.angle, 1, 1, self.image_spider:getWidth() / 2, self.image_spider:getHeight() / 2)
+        end,
+
+        drawInformation = function(self)
+            love.graphics.rectangle("fill", 0, 100, 100, 300)
         end
     }
 end

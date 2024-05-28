@@ -4,7 +4,7 @@ local Game = require "Game"
 local Button = require "Components.Button"
 local Player = require "Player"
 local bullets = require "Bullets"
-local Monster = require "Monster"
+local Monster = require "Monster.Monster"
 
 enemies = {}
 local spawnTimer = 0
@@ -148,9 +148,9 @@ function love.update(dt)
         checkPlayerCollision()
         -- monster:move(player.x, player.y, dt)
         spawnTimer = spawnTimer + dt
-        spawnInterval = 5 - game.level; -- *n
+        spawnInterval = calculateSpawnInterval(game.level); -- *n
         if spawnTimer >= spawnInterval then
-            spawnEnemy()
+            spawnEnemy(60)
             spawnTimer = 0
         end
         for _, enemy in ipairs(enemies) do
@@ -231,7 +231,7 @@ function love.draw()
 --#endregion
 end
 
-function spawnEnemy()
+function spawnEnemy(speed)
     local side = math.random(1, 4)
     local x, y
     if side == 1 then -- Trên màn hình
@@ -247,7 +247,7 @@ function spawnEnemy()
         x = love.graphics.getWidth() + 30
         y = math.random(0, love.graphics.getHeight())
     end
-    table.insert(enemies, Monster(x, y, 50))
+    table.insert(enemies, Monster(x, y, speed))
 end
 
 function checkCollisions()
@@ -255,7 +255,8 @@ function checkCollisions()
         local bullet = Bullet.bullets[i]
         for j = #enemies, 1, -1 do
             local enemy = enemies[j]
-            if checkCollision(bullet.x, bullet.y, enemy.x, enemy.y, enemy.image:getWidth()/2) then
+            -- enemy:drawInformation()
+            if checkCollision(bullet.x, bullet.y, enemy.x, enemy.y, enemy.image_spider:getWidth()/2) then
                 table.remove(Bullet.bullets, i)
                 if enemy.blood <= 1 then
                     table.remove(enemies, j)
@@ -283,11 +284,18 @@ end
 
 function checkPlayerCollision()
     for _, enemy in ipairs(enemies) do
-        if checkCollision(player.x, player.y, enemy.x, enemy.y, player.radius + enemy.image:getWidth()/2) then
+        if checkCollision(player.x, player.y, enemy.x, enemy.y, player.radius + enemy.image_spider:getWidth()/2) then
             if player.blood <= 2 then
                 love.event.quit();
             end
             player.blood = player.blood - 1;
         end
     end
+end
+
+local spawnIntervalBase = 5
+local spawnIntervalMin = 0.5
+
+function calculateSpawnInterval(level)
+    return math.max(spawnIntervalMin, spawnIntervalBase - 1.1*math.log(level + 1))
 end

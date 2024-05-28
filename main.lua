@@ -139,6 +139,7 @@ function love.update(dt)
         player:move(dt)
         GunShooting(dt)
         checkCollisions()
+        checkPlayerCollision()
         -- monster:move(player.x, player.y, dt)
         spawnTimer = spawnTimer + dt
         if spawnTimer >= spawnInterval then
@@ -261,4 +262,12 @@ function checkCollision(bx, by, ex, ey, eradius)
     local dy = by - ey
     local distance = math.sqrt(dx * dx + dy * dy)
     return distance < eradius
+end
+
+function checkPlayerCollision()
+    for _, enemy in ipairs(enemies) do
+        if checkCollision(player.x, player.y, enemy.x, enemy.y, player.radius + enemy.image:getWidth()/2) then
+            love.event.quit() -- Thoát chương trình
+        end
+    end
 end

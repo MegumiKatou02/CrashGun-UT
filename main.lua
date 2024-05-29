@@ -192,6 +192,18 @@ function love.draw()
         love.graphics.setColor(1, 1, 1)
         love.graphics.circle("fill", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100)
 
+        local sizeWidthScreen = love.graphics.getWidth();
+        love.graphics.circle("fill", sizeWidthScreen - 50, 20 , 20)
+        love.graphics.polygon(
+            "fill",
+            sizeWidthScreen - 60,
+            30,
+            sizeWidthScreen - 60,
+            -30,
+            55,
+            55
+        )
+
         player:draw()
         
         for _, enemy in ipairs(enemies) do

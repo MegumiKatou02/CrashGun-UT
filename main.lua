@@ -255,7 +255,6 @@ function checkCollisions()
         local bullet = Bullet.bullets[i]
         for j = #enemies, 1, -1 do
             local enemy = enemies[j]
-            -- enemy:drawInformation()
             if checkCollision(bullet.x, bullet.y, enemy.x, enemy.y, enemy.image_spider:getWidth()/2) then
                 table.remove(Bullet.bullets, i)
                 if enemy.blood <= 1 then
@@ -274,7 +273,7 @@ function checkCollisions()
     end
 end
 
--- Hàm kiểm tra va chạm giữa đạn và quái vật (tròn)??
+-- Hàm kiểm tra va chạm giữa đạn và quái vật (tròn)????
 function checkCollision(bx, by, ex, ey, eradius)
     local dx = bx - ex
     local dy = by - ey

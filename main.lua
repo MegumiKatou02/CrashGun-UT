@@ -201,7 +201,7 @@ function love.draw()
             sizeWidthScreen - 60,
             -30,
             55,
-            55 -- *n
+            55 -- *n  
         )
 
         player:draw()

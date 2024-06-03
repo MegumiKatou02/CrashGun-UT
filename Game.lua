@@ -16,7 +16,7 @@ function Game()
             exit = false,
         },
         
-        main = {
+        main = {--
             settings = false
         },
 

@@ -181,6 +181,7 @@ function love.update(dt)
 end
 
 function love.draw()
+    print(game.coin)
     if game.state["menu"] or game.state["menuDouble"] then
         game:DrawMenuGame()
         game.button_state.menu.play_game:draw(20, 35, nil, nil)

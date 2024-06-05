@@ -164,6 +164,10 @@ function love.update(dt)
         if love.keyboard.isDown("escape") then
             ChangeGameState("pause")
         end
+        if love.keyboard.isDown("=") then
+            game.coin = 0 -- buff
+            game:SaveGame()
+        end
         player:move(dt)
         GunShooting(dt)
         checkCollisions()

@@ -8,6 +8,7 @@ function Game()
     return {
         level = 1,
         countEnemyDie = 0,
+        coin = 0,
         state = { -- các trạng thái trong một game
             menu = false,
             menuDouble = false,

@@ -154,6 +154,9 @@ function love.update(dt)
         end
     end
     if game.state["running"] then
+        if love.keyboard.isDown("escape") then
+            ChangeGameState("pause")
+        end
         player:move(dt)
         GunShooting(dt)
         checkCollisions()

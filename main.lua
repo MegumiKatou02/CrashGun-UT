@@ -80,6 +80,9 @@ function LoadMenu()
     
     game.button_state.menu.select_mode_easy = Button(230, 320, "Chế độ \n\tDỄ", ChangeGameState, "running")
     game.button_state.menu.select_mode_hard = Button(230, 320, "Chế độ \n\tKHÓ", nil, nil)
+
+    game.button_state.running.select_continue = Button(230, 320, "Chơi tiếp", ChangeGameState, "running")
+    game.button_state.running.select_exit_game = Button(230, 320, "Thoát game", ChangeGameState, "menu")
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
@@ -110,6 +113,17 @@ function love.mousepressed(x, y, button, istouch, presses)
             end
         elseif game.state["running"] then
             CheckPressButtonInRunning(x, y)
+        elseif game.state["pause"] then
+            local lenX, lenY = 520, 355
+            local recX = love.graphics.getWidth() / 2 - (lenX / 2)
+            local recY = love.graphics.getHeight() / 2 - (lenY / 2)
+            if CheckOutSideTheRectangle(recX, recY, lenX, lenY, love.mouse.getX(), love.mouse.getY()) then
+                
+            else
+                for index in pairs(game.button_state.running) do
+                    game.button_state.running[index]:checkPressed(x, y)
+                end
+            end
         end
         --#endregion
     end
@@ -229,12 +243,7 @@ function love.draw()
             love.graphics.setColor(1, 1, 1, 1)
 
             LightUpButton()
-            love.graphics.setColor(13/225, 12/225, 12/225)
-            local lenX, lenY = 520, 355
-            local recX = love.graphics.getWidth() / 2 - lenX / 2
-            local recY = love.graphics.getHeight()/ 2 - lenY / 2
-            love.graphics.rectangle("fill",recX, recY, lenX, lenY)
-            love.graphics.setColor(1, 1, 1)
+            FramePauseChoosing()
         end
         -- #endregion
     else
@@ -334,4 +343,15 @@ function LightUpButton()
         love.graphics.draw(buttonContinueOrPause, sizeWidthScreen - 85, -14)
     end
     -- fixing 
+end
+
+function FramePauseChoosing()
+    love.graphics.setColor(13/225, 12/225, 12/225)
+    local lenX, lenY = 520, 355
+    local recX = love.graphics.getWidth() / 2 - lenX / 2
+    local recY = love.graphics.getHeight()/ 2 - lenY / 2
+    love.graphics.rectangle("fill",recX, recY, lenX, lenY)
+    love.graphics.setColor(1, 1, 1)
+    game.button_state.running.select_continue:draw(recX + 20, recY + 17, 100, 25)
+    game.button_state.running.select_exit_game:draw(recX * 2 + 30, recY + 17, 40, 25)
 end

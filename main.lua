@@ -146,6 +146,10 @@ end
 
 function love.update(dt)
     local mouse_x_player, mouse_y_player = love.mouse.getPosition()
+    if game.state["menu"] then
+        game.coin = game.coin + recentCoinInAGame
+        recentCoinInAGame = 0
+    end
     if game.state["menuDouble"] then
         mys = love.mouse.getX() .. " " .. love.mouse.getY()
     else
@@ -241,6 +245,7 @@ function love.draw()
         love.graphics.setColor(1, 1, 1)
         love.graphics.print("Level " .. game.level, 0, 75)
         love.graphics.draw(coin, sizeWidthScreen - 76, 70, 0, 0.085, 0.085)
+        love.graphics.print(recentCoinInAGame, sizeWidthScreen - 70, 120)
         --#endregion
         -- #region pause
         if game.state["pause"] then
@@ -293,12 +298,13 @@ function checkCollisions()
                 if enemy.blood <= 1 then
                     table.remove(enemies, j)
                     game.countEnemyDie = game.countEnemyDie + 1;
+                    recentCoinInAGame = recentCoinInAGame + 5
                     if game.countEnemyDie >= 5 then
                         game.countEnemyDie = 0;
                         game.level = game.level + 1;
                     end
-                else 
-                    enemy.blood = enemy.blood -1; -- *n
+                else
+                    enemy.blood = enemy.blood - 1;
                 end
                 break
             end
@@ -348,7 +354,6 @@ function LightUpButton()
         love.graphics.circle("fill", sizeWidthScreen - 50, 20, 20) -- ban kinh: 20 pixel
         love.graphics.draw(buttonContinueOrPause, sizeWidthScreen - 85, -14)
     end
-    -- fixing 
 end
 
 function FramePauseChoosing()

@@ -4,6 +4,7 @@ function Player()
     local skin = "image/playerSkin/players.png"
     local rotateRadian = 200
     return {
+        rotateRadian = rotateRadian or 200,
         x = love.graphics.getWidth() / 2, -- Vị trí giữa màn hình
         y = love.graphics.getHeight() / 2,
         skin = love.graphics.newImage(skin),
@@ -44,7 +45,8 @@ function Player()
 
         ChangeUpRotate = function (self, nough)
             self.rotateRadian = self.rotateRadian + nough
-        end
+            self.rotationSpeed = math.rad(self.rotateRadian)
+        end,
     }
 end
 

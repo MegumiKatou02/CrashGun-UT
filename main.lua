@@ -161,6 +161,7 @@ function love.update(dt)
         end
     end
     if game.state["running"] then
+        ChangeSpeedRotate()
         if love.keyboard.isDown("escape") then
             ChangeGameState("pause")
         end
@@ -252,6 +253,8 @@ function love.draw()
         love.graphics.print("Level " .. game.level, 0, 75)
         love.graphics.draw(coin, sizeWidthScreen - 76, 70, 0, 0.085, 0.085)
         love.graphics.print(recentCoinInAGame, sizeWidthScreen - 70, 120)
+
+        love.graphics.print("Xoay: " .. player.rotateRadian, 500, 0) -- fixing
         --#endregion
         -- #region pause
         if game.state["pause"] then
@@ -333,7 +336,7 @@ function checkPlayerCollision()
     for _, enemy in ipairs(enemies) do
         if checkCollision(player.x, player.y, enemy.x, enemy.y, player.radius + enemy.image_spider:getWidth()/2) then
             if player.blood <= 2 then
-                game.level = 1 -- *n
+                game.level = 1
                 game:SaveGame()
                 love.event.quit();
             end
@@ -376,4 +379,12 @@ function FramePauseChoosing()
     love.graphics.setColor(1, 1, 1)
     game.button_state.running.select_continue:draw(recX + 20, recY + 17, 100, 25)
     game.button_state.running.select_exit_game:draw(recX * 2 + 30, recY + 17, 40, 25)
+end
+
+function ChangeSpeedRotate()
+    if love.keyboard.isDown("o") then
+        player:ChangeUpRotate(10)
+    elseif love.keyboard.isDown("u") and player.rotateRadian > 200 then
+        player:ChangeUpRotate(-10)
+    end -- fixing
 end

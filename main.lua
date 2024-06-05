@@ -148,7 +148,7 @@ function love.update(dt)
         checkPlayerCollision()
         -- monster:move(player.x, player.y, dt)
         spawnTimer = spawnTimer + dt
-        spawnInterval = calculateSpawnInterval(game.level); -- *n
+        spawnInterval = calculateSpawnInterval(game.level)
         if spawnTimer >= spawnInterval then
             spawnEnemy(60)
             spawnTimer = 0
@@ -194,15 +194,6 @@ function love.draw()
 
         local sizeWidthScreen = love.graphics.getWidth();
         love.graphics.circle("fill", sizeWidthScreen - 50, 20 , 20)
-        love.graphics.polygon(
-            "fill",
-            sizeWidthScreen - 60,
-            30,
-            sizeWidthScreen - 60,
-            -30,
-            55,
-            55 -- *n  
-        )
 
         player:draw()
         

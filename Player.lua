@@ -1,10 +1,11 @@
 local love = require "love"
 
 function Player()
+    local skin = "image/playerSkin/players.png"
     return {
         x = love.graphics.getWidth() / 2, -- Vị trí giữa màn hình
         y = love.graphics.getHeight() / 2,
-        skin = love.graphics.newImage("image/playerSkin/players.png"),
+        skin = love.graphics.newImage(skin),
         angle = math.rad(-90), -- Góc quay ban đầu là -π/2 radian (90 độ ngược chiều kim đồng hồ từ hướng phải)
         rotationSpeed = math.rad(200), -- Tốc độ quay, đơn vị radian/giây
         bulletSpeed = 1900, -- Tốc độ của đạn
@@ -34,6 +35,10 @@ function Player()
 
         draw = function (self)
             love.graphics.draw(self.skin, self.x, self.y, self.angle, 1, 1, self.skin:getWidth() / 2, self.skin:getHeight() / 2)
+        end,
+
+        ChangeSkin = function (self, skin)
+            self.skin = skin or "image/playerSkin/players.png"
         end
     }
 end

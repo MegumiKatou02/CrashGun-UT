@@ -21,7 +21,8 @@ function Game()
         },
 
         button_state = {
-            menu = {}
+            menu = {},
+            running = {},
         },
 
         DrawMenuGame = function ()

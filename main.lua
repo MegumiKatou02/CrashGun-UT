@@ -227,6 +227,14 @@ function love.draw()
             love.graphics.setColor(0, 0, 0, 0.5)
             love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
             love.graphics.setColor(1, 1, 1, 1)
+
+            LightUpButton()
+            love.graphics.setColor(13/225, 12/225, 12/225)
+            local lenX, lenY = 520, 355
+            local recX = love.graphics.getWidth() / 2 - lenX / 2
+            local recY = love.graphics.getHeight()/ 2 - lenY / 2
+            love.graphics.rectangle("fill",recX, recY, lenX, lenY)
+            love.graphics.setColor(1, 1, 1)
         end
         -- #endregion
     else
@@ -320,6 +328,10 @@ function CheckPressButtonInRunning(mouse_x, mouse_y)
 end
 
 function LightUpButton()
-   
+    if game.state["pause"] then
+        local sizeWidthScreen = love.graphics.getWidth();
+        love.graphics.circle("fill", sizeWidthScreen - 50, 20, 20) -- ban kinh: 20 pixel
+        love.graphics.draw(buttonContinueOrPause, sizeWidthScreen - 85, -14)
+    end
     -- fixing 
 end

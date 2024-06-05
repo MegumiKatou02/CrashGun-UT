@@ -37,8 +37,8 @@ function Player()
             love.graphics.draw(self.skin, self.x, self.y, self.angle, 1, 1, self.skin:getWidth() / 2, self.skin:getHeight() / 2)
         end,
 
-        ChangeSkin = function (self, skin)
-            self.skin = skin or "image/playerSkin/players.png"
+        ChangeSkin = function (self, newSKin)
+            self.skin = newSKin or "image/playerSkin/players.png"
         end
     }
 end

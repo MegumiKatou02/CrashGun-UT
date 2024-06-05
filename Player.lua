@@ -2,12 +2,13 @@ local love = require "love"
 
 function Player()
     local skin = "image/playerSkin/players.png"
+    local rotateRadian = 200
     return {
         x = love.graphics.getWidth() / 2, -- Vị trí giữa màn hình
         y = love.graphics.getHeight() / 2,
         skin = love.graphics.newImage(skin),
         angle = math.rad(-90), -- Góc quay ban đầu là -π/2 radian (90 độ ngược chiều kim đồng hồ từ hướng phải)
-        rotationSpeed = math.rad(200), -- Tốc độ quay, đơn vị radian/giây
+        rotationSpeed = math.rad(rotateRadian), -- Tốc độ quay, đơn vị radian/giây
         bulletSpeed = 1900, -- Tốc độ của đạn
         shootDelay = 0.1, -- Thời gian chờ giữa mỗi lần bắn (giây)
         canShoot = true, -- Biến trạng thái cho phép bắn
@@ -39,6 +40,10 @@ function Player()
 
         ChangeSkin = function (self, newSKin)
             self.skin = newSKin or "image/playerSkin/players.png"
+        end,
+
+        ChangeUpRotate = function (self, nough)
+            self.rotateRadian = self.rotateRadian + nough
         end
     }
 end

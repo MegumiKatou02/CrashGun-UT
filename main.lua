@@ -9,6 +9,7 @@ local Monster = require "Monster.Monster"
 enemies = {}
 local spawnTimer = 0
 local spawnInterval = 5
+local recentCoinInAGame = 0
 
 function ChangeChoose(state)
     game.main["settings"] = state == "settings"
@@ -133,6 +134,7 @@ end
 function love.load()
     avatarPlayer = love.graphics.newImage("image/icon/tt.jpg")
     buttonContinueOrPause = love.graphics.newImage("image/button/continueButton.png")
+    coin = love.graphics.newImage("image/background/coin.png")
     game = Game()
     -- monster = Monster(50)
     table.insert(enemies, Monster(-1, -1, 50))
@@ -238,6 +240,7 @@ function love.draw()
         end
         love.graphics.setColor(1, 1, 1)
         love.graphics.print("Level " .. game.level, 0, 75)
+        love.graphics.draw(coin, sizeWidthScreen - 76, 70, 0, 0.085, 0.085)
         --#endregion
         -- #region pause
         if game.state["pause"] then

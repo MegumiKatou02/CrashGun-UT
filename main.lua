@@ -184,7 +184,7 @@ function love.draw()
         if game.main["settings"] then
             SettingMenu()
         end
-    elseif game.state["running"] then
+    elseif game.state["running"] or game.state["pause"] then
         love.graphics.setColor(40/225, 222/225, 49/225)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
         love.graphics.setColor(1, 1, 1)
@@ -193,7 +193,7 @@ function love.draw()
         player:draw()
 
         local sizeWidthScreen = love.graphics.getWidth();
-        love.graphics.circle("fill", sizeWidthScreen - 50, 20 , 20) -- ban kinh: 20 pixel
+        love.graphics.circle("fill", sizeWidthScreen - 50, 20, 20) -- ban kinh: 20 pixel
         love.graphics.draw(buttonContinueOrPause, sizeWidthScreen - 85, -14)
 
         
@@ -222,6 +222,13 @@ function love.draw()
         love.graphics.setColor(1, 1, 1)
         love.graphics.print("Level " .. game.level, 0, 75)
         --#endregion
+        -- #region pause
+        if game.state["pause"] then
+            love.graphics.setColor(0, 0, 0, 0.5)
+            love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+            love.graphics.setColor(1, 1, 1, 1)
+        end
+        -- #endregion
     else
         -- for index in pairs(game.state) do
         --     if game.state[index] then
@@ -303,11 +310,16 @@ function calculateSpawnInterval(level)
 end
 
 function CheckPressButtonInRunning(mouse_x, mouse_y)
-    -- fixing
     local sizeWidthScreen = love.graphics.getWidth();
     love.graphics.circle("fill", sizeWidthScreen - 50, 20, 20)
     if mouse_x < sizeWidthScreen - 50 + 20 and mouse_x > sizeWidthScreen - 50 - 20 then
-
-        love.event.quit()
+        if mouse_y < 20 + 20 and mouse_y > 20 - 20 then
+            ChangeGameState("pause")
+        end
     end
+end
+
+function LightUpButton()
+   
+    -- fixing 
 end

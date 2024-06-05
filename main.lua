@@ -109,11 +109,7 @@ function love.mousepressed(x, y, button, istouch, presses)
                 end
             end
         elseif game.state["running"] then
-            -- if button == 1 and player.canShoot then
-            --     createBullet(player.x, player.y, player.angle)
-            --     player.canShoot = false
-            --     player.shootTimer = player.shootDelay
-            -- end
+            CheckPressButtonInRunning(x, y)
         end
         --#endregion
     end
@@ -122,6 +118,7 @@ end
 --#region main file
 function love.load()
     avatarPlayer = love.graphics.newImage("image/icon/tt.jpg")
+    buttonContinueOrPause = love.graphics.newImage("image/button/continueButton.png")
     game = Game()
     -- monster = Monster(50)
     table.insert(enemies, Monster(-1, -1, 50))
@@ -132,6 +129,7 @@ function love.load()
 end
 
 function love.update(dt)
+    local mouse_x_player, mouse_y_player = love.mouse.getPosition()
     if game.state["menuDouble"] then
         mys = love.mouse.getX() .. " " .. love.mouse.getY()
     else
@@ -191,11 +189,13 @@ function love.draw()
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
         love.graphics.setColor(1, 1, 1)
         love.graphics.circle("fill", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100)
+        
+        player:draw()
 
         local sizeWidthScreen = love.graphics.getWidth();
-        love.graphics.circle("fill", sizeWidthScreen - 50, 20 , 20)
+        love.graphics.circle("fill", sizeWidthScreen - 50, 20 , 20) -- ban kinh: 20 pixel
+        love.graphics.draw(buttonContinueOrPause, sizeWidthScreen - 85, -14)
 
-        player:draw()
         
         for _, enemy in ipairs(enemies) do
             enemy:draw()
@@ -300,4 +300,14 @@ local spawnIntervalMin = 0.5
 
 function calculateSpawnInterval(level)
     return math.max(spawnIntervalMin, spawnIntervalBase - 1.1*math.log(level + 1))
+end
+
+function CheckPressButtonInRunning(mouse_x, mouse_y)
+    -- fixing
+    local sizeWidthScreen = love.graphics.getWidth();
+    love.graphics.circle("fill", sizeWidthScreen - 50, 20, 20)
+    if mouse_x < sizeWidthScreen - 50 + 20 and mouse_x > sizeWidthScreen - 50 - 20 then
+
+        love.event.quit()
+    end
 end

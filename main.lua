@@ -76,7 +76,7 @@ end
 function LoadMenu()
     game.button_state.menu.play_game = Button(230, 100, "Game mới", ChangeGameState, "menuDouble")
     game.button_state.menu.information_game = Button(230, 100, "Cửa hàng", nil, nil)
-    game.button_state.menu.exit_game = Button(230, 100, "Thoát game", love.event.quit, nil)
+    game.button_state.menu.exit_game = Button(230, 100, "Thoát game", ChangeGameState, "exit")
     game.button_state.menu.setting_game = Button(230, 100, "Cài đặt", ChangeChoose, "settings")
     
     game.button_state.menu.select_mode_easy = Button(230, 320, "Chế độ \n\tDỄ", ChangeGameState, "running")
@@ -132,10 +132,11 @@ end
 
 --#region main file
 function love.load()
+    game = Game()
+    game.coin, game.level = game:LoadGame()
     avatarPlayer = love.graphics.newImage("image/icon/tt.jpg")
     buttonContinueOrPause = love.graphics.newImage("image/button/continueButton.png")
     coin = love.graphics.newImage("image/background/coin.png")
-    game = Game()
     -- monster = Monster(50)
     table.insert(enemies, Monster(-1, -1, 50))
     player = Player()
@@ -258,6 +259,9 @@ function love.draw()
             FramePauseChoosing()
         end
         -- #endregion
+    elseif game.state["exit"] then
+        game:SaveGame()
+        love.event.quit()
     else
         -- for index in pairs(game.state) do
         --     if game.state[index] then
@@ -325,6 +329,8 @@ function checkPlayerCollision()
     for _, enemy in ipairs(enemies) do
         if checkCollision(player.x, player.y, enemy.x, enemy.y, player.radius + enemy.image_spider:getWidth()/2) then
             if player.blood <= 2 then
+                game.level = 1 -- *n
+                game:SaveGame()
                 love.event.quit();
             end
             player.blood = player.blood - 1;

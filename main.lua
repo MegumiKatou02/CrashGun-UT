@@ -148,7 +148,7 @@ end
 function love.update(dt)
     local mouse_x_player, mouse_y_player = love.mouse.getPosition()
     if game.state["menu"] then
-        game.coin = game.coin + recentCoinInAGame
+        game.coin = game.coin + recentCoinInAGame * 0.5
         recentCoinInAGame = 0
     end
     if game.state["menuDouble"] then
@@ -215,10 +215,12 @@ function love.draw()
             SettingMenu()
         end
     elseif game.state["running"] or game.state["pause"] then
-        love.graphics.setColor(40/225, 222/225, 49/225)
-        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        -- love.graphics.setColor(40/225, 222/225, 49/225)
+        -- love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        love.graphics.draw(game.backgroundRunning, 0, 0, 0, 3.3, 3.3)
+
         love.graphics.setColor(1, 1, 1)
-        love.graphics.circle("fill", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100)
+        -- love.graphics.circle("fill", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100)
         
         player:draw()
 
@@ -254,8 +256,7 @@ function love.draw()
         love.graphics.draw(coin, sizeWidthScreen - 76, 70, 0, 0.085, 0.085)
         love.graphics.print(recentCoinInAGame, sizeWidthScreen - 70, 120)
 
-        love.graphics.print("Xoay: " .. player.rotateRadian, 500, 0) -- fixing
-        --#endregion
+        love.graphics.print("Xoay: " .. player.rotateRadian, 500, 0)
         -- #region pause
         if game.state["pause"] then
             love.graphics.setColor(0, 0, 0, 0.5)
@@ -317,6 +318,7 @@ function checkCollisions()
                     end
                 else
                     enemy.blood = enemy.blood - 1;
+                    break; -- fixing
                 end
                 break
             end
@@ -336,9 +338,8 @@ function checkPlayerCollision()
     for _, enemy in ipairs(enemies) do
         if checkCollision(player.x, player.y, enemy.x, enemy.y, player.radius + enemy.image_spider:getWidth()/2) then
             if player.blood <= 2 then
-                game.level = 1
-                game:SaveGame()
-                love.event.quit();
+                ResetPlayer()
+                ChangeGameState("menu")
             end
             player.blood = player.blood - 1;
         end
@@ -386,5 +387,17 @@ function ChangeSpeedRotate()
         player:ChangeUpRotate(10)
     elseif love.keyboard.isDown("u") and player.rotateRadian > 200 then
         player:ChangeUpRotate(-10)
-    end -- fixing
+    end
+end
+
+function ResetPlayer()
+    game.level = 1
+    player.x = love.graphics.getWidth() / 2
+    player.y = love.graphics.getHeight() / 2
+    player.rotateRadian = 200
+    player.blood = 400 + 85
+    for k in pairs (enemies) do
+        enemies [k] = nil
+    end -- remove all enemies are stading to start a new game
+    game:SaveGame()
 end

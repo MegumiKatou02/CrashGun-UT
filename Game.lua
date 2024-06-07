@@ -7,6 +7,7 @@ function Game()
     frameSelectionMenu = love.graphics.newImage("image/Menu/Components/blackScreen.png")
     local FileDirectory = "chinh.txt"
     return {
+        backgroundRunning = love.graphics.newImage("image/background/backgroundT.jpg"),
         level = 1,
         countEnemyDie = 0,
         coin = 0,
@@ -47,7 +48,7 @@ function Game()
             else
                 return 0, 1 -- Giá trị mặc định nếu không có file lưu
             end
-        end
+        end,
     }
 
 end

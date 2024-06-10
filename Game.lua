@@ -46,7 +46,7 @@ function Game()
                 level = tonumber(level) or 1
                 return coin, level
             else
-                return 0, 1 -- Giá trị mặc định nếu không có file lưu
+                return 0, 1 -- Giá trị mặc định nếu không có file lưu --
             end
         end,
     }

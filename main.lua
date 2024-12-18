@@ -398,6 +398,6 @@ function ResetPlayer()
     player.blood = 400 + 85
     for k in pairs (enemies) do
         enemies [k] = nil
-    end -- remove all enemies are stading to start a new game
+    end 
     game:SaveGame()
 end
